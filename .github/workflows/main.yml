@@ -1,0 +1,10 @@
+name: Checkout code
+on: push
+jobs: 
+  checkout-job:
+     runs-on: ubuntu-latest
+     steps:
+       - name: Cheeckout repo
+         uses: action/checkout@v4
+       - name: print all files 
+         run: ls -la
