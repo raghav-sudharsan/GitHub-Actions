@@ -1,0 +1,622 @@
+11/12/2025: Introduction to Source Code Management in DevOps
+=============================================================
+ kind of process which is used to maintain clean code across the project life cycle
+ is kind of automated life cycle 
+ 
+ cicd pipeline: 
+      build files 
+	  pipeline files --> jenkins file 
+	  playbook files --> yaml file using ansible  
+      k8s manifest files
+      iac files --- terraform script
+      shell scripts
+      docker files
+      compose files
+      config/settings/properties files
+      gitops
+	  
+ scm: --store, track , manage and how to collaborate the cd
+   application code 
+   iac code 
+   configurations 
+   ci/cd pipelines 
+   documentation 
+ 
+why do we need scm in devops: 
+----------------------------- 
+  to maintain versioning of the code  
+  versions: Enhancement of the existing code/build/file/artifacts
+  collaboration between developers 
+  
+  rollback capability during failure 
+  how to handle the release 
+  
+  tree --> origin-trunk --> branches-leaf --tags
+  
+  secure control 
+  access control 
+  
+  branching stratagies
+  traceability:
+  integrations with devops 
+  
+  local repo: git  
+  remote repo: github 
+  
+
+ 
+ pull: execute automated build at schedule times 
+ push :execute automated build when there is change is happened at repository
+ 
+ How to handle the release
+ --------------------------
+  tree -> origin ->
+  
+ gitinstallation.sh
+  #!/bin/bash
+  
+  if command -v git > /dev/null 2>&1
+  then
+      echo git
+	  
+	  
+12/12/25: 
+===========
+git is DVCS:
+------------
+ checkin
+ checkout
+
+cvcs:
+-----
+ if it crashes - development stops
+ no offline commits/should be online
+ 
+dvcs: distributed version control system:GIT
+---------------------------------------------
+1) can work at offline
+2) can have complete copy of repo at your workstation-local repo
+3)repository import
+4) branch mapping
+5) version history
+6) with out overriding can collaborate with others
+7)rollback
+8) pipelines, terraform-iac file
+9) release management
+
+basic terms:
+ git --- tool ---- commands --- local repo
+ github -- repo ---- remote repository
+  branch :
+   current linear development 
+
+what is repository:
+---------------------
+folder with .git directory
+
+work flow:
+----------
+working directory --- unstaged/untraked area ---- staging area/index area --> commit area 
+
+
+git:
+----
+
+Build area --> Index area --> Commit area 
+ mkdir myrepo
+ git init
+ 
+  web hooks:
+   server side hooks
+   client side hooks
+   
+  git status
+  touch f1 f2
+  git status   #track new changes in working dir 
+  git add .    
+   cd .git
+   cd head
+  git status 
+  git commit -m "message"
+  git log 
+  git shortlog 
+  
+  
+15/12/25: Remote Repository
+===========================
+
+ porceian commands : user firendly commands: git add,git log...
+                   : high level commands 
+				   
+ plumbing commands : low-level internal commands 
+                   :debugging corrupted repos 
+				   :writing coustom git automation 
+				   :ci/cd analysis 
+				   :to understand how git is store the data
+				   
+what is remote repositiry?
+---------------------------
+ *is a distributed repository where we will share the code and maintain the code 
+ *github is not a tool 
+ *is repository used for hosting service 
+ *Provides centralized collaboration for the distributed teams 
+ *types oof repos:
+      public and private repos 
+	  
+ *we will maintain the private repo at corporate level 
+ *DevOps engineer will handling the repo: framework 
+ *maintain full git history 
+ *need to handle repos at deff leve : per project,organizarion 
+ *uses branches for parallel development 
+ *what is branch 
+   is linear independent work flow 
+   
+ *default branch is : master/main
+ *github enable forking repositories  # to create copy of remote repositories 
+ *github support PR workflows  #Pull request 
+ *PR enables code review before merge 
+ * supports RBAC (Role based Access control) -> Github/Jenkins/docker/k8s/aws-IAM
+ *user, team can work at organizational level 
+ * x ---> push the code to repo at feature branch -> owner define some mandatory reviewers 
+ *workflow automation 
+ *branch protection rules  -> must avoid direct commits 
+ *quality gates 
+  track the issue /tasks/bugs/enchacements
+ *webbooks -->restAPI
+ *proper version, builds, patches are numbering --tags --release 
+ *ci/cd automation -->githubaction  #define workflows -yaml 
+ 
+ 
+ 
+why we need remote repository? 
+
+
+16/12/2025: public and private repository
+==========================================
+ create public and private repository 
+ .git 
+ 
+ how to access the github repo:
+ ------------------------------
+ via ssh
+ via 
+ 
+ cd /opt/
+ sudo yum install git 
+ git --version 
+ 
+ 
+ ssh-keygen -t rsa -b 4096 -c"raghav@gmail.com"  #secure hashing algorithm
+ 
+ 
+17/12/2025:
+=================
+
+
+why we need remote repository?
+------------------------------
+what is master
+what is origin/master
+git branch
+git branch -a
+git restore -- staged . --- moves the files from the traked to untracked
+git clone
+  * deep cloning    --> taking full history of the github
+  * shallow cloning --> latest commits only/no commit full history
+
+  git clone --depth=1 *github url  
+  git log | wc -l #print recent commits 
+  git log 
+  git log --oneline 
+  
+  git clone
+  git pull: download+merge 
+  git fetch --download
+  
+  git name-rev --name-only *
+  
+ Q: can you convert shallow clone to deep clone
+ ------------------------------------------------
+ git fetch --unshallow 
+  
+  
+18/12/25: Branch
+==================
+ is a pointer t commit 
+ current development workflow 
+ master/main 
+ development 
+ feature 
+ bugfix 
+ hotfix 
+ patch 
+ experiment without affecting the master/main code 
+ 
+ without banches:
+ ----------------
+ only one line of development
+ have risk of breaking production environment
+ no parallel development/work
+
+ with branches: 
+  parallel development 
+  clean,precise ci/cd pipeline 
+  easy rollback 
+  team collaboration 
+  
+ real DevOps engineer: 
+ --------------------- 
+  1. CI: 
+       pull: execute an automated build at schedule time 
+	   push: execute automated build where there is change is happen at specific branch of repo 
+	   runs on feature branches 
+	   
+  2. CD: happen only from stable branches: 
+  master
+  
+ where are branches used: 
+  feature development: 
+  feature/payment-api 
+  
+  bug fixing 
+  release 
+  hotfix 
+  
+ cicd pipelines:
+  
+ when soft code freeze happens:
+ -----------------------------
+  1. branching rules 
+  2. cicd rules 
+  3. human approval 
+  
+ what is hard code freeze: 
+  show stopper bugs 
+  
+ how hardcode feeze is enforced in git:
+  1. branch protection 
+     lock the branch 
+	 disable merge permission
+  2. ci/cd lock 
+  3. org policy 
+  4. feature flags 
+  
+  github/gitlab 
+  
+ branching commands:
+ -------------------
+  git branch 
+  git checkout 
+  git merge 
+  git push origin branchname 
+  git diff 
+  git rebase
+  
+ short-lived branches 
+ long -lived branches 
+ 
+ 
+ 
+ 
+  build
+  version
+  patch
+  hotfix
+  fixpack
+  major.minor.patch.buildno
+  major-minior.hotfix.buildno
+  
+  
+  
+19/12/25: Branch 
+=================
+Local Branch 
+------------ 
+List with last commit: 
+ git branch -v 
+ git pull 
+ git push 
+ git fetch 
+ git branch -a 
+ git branch branchname 
+ git checkout branchname 
+ git branch --merged  #list merged branch 
+ git branch --no-merged
+ git merge feature  #from master branch #fat-forward 
+ 
+ what is fast-forward merge: 
+ --------------------------- 
+ 
+ --pending
+ 
+26/12/2025: GitHub Action
+==========================
+ what is Github: 
+ ---------------
+ what is github and its features from the devops perspective
+  -what is organization: 
+           
+  what is project
+  what Is team
+  how to set the boundaries to the teams and users
+  what is GitHub:
+  
+  how to use GitHub and its features from the devops prospective
+  what is organization
+  how to add the users to the teams
+  how to create the repositories
+  how to apply repo and level, project and organizationlevel
+  settings
+  how to integrate the apps with GitHub to automatesomekind of work flow
+  
+  
+  -- pending 
+  
+29/12/2025 - Pull Request (PR)
+===================================================
+ Audit and history 
+ ----------------
+ every change has 
+  who cahanges
+  why changess 
+  when changed 
+  
+ when we for PR:
+ ----------------
+  1. adding new feature 
+  2. fixing a branch 
+  3. hotfix in production 
+  4. Refactorization code 
+     testcase -- fail-red --test-green 
+  5. infra changes 
+      k8s yaml 
+	  .tf files 
+	  ci/cd pipelines 
+	  
+ flow of PR:
+ -----------
+  create a new branch 
+  make code chamges 
+  push branch to github 
+  create PR 
+  review + comments 
+  CI checks pass 
+  manage PR 
+  
+  branch deletion 
+  
+PR rules/complainces:
+--------------------- 
+* FEATURE+REFACTOR+CONFIG CHANGES ---- PR
+* give proper menaning-ful PR TITLE and
+description
+* PR --- review --- minium approval
+* ci must pass before merge  
+   build fails 
+   tests fail 
+   security scans fails 
+   
+* note: only PR-based merges should allow 
+* delete branch after merge 
+
+ git clone vs git fork 
+ 
+ Branch protection:
+  SAST
+  DAST 
+  
+CI -first steps 
+  code checkout --> Dependency analysis --> code compile 
+ 
+
+ 
+30/12/2025: Github-action
+============================
+* GitHub/bitbuckey/GitLab/code commit/azurerepo
+
+*what are the github-actions: 
+------------------------------
+ is ci/cd platform
+ is a kind automation tool
+ used to automate work-flow --- when something happens in repo-need to automate that flow
+ yaml-based flow
+  
+*Multiple things are happen-something --> events
+  event: --> PR 
+        create the branch 
+	    any issues
+	    code push 
+	    merged 
+	    release 
+* Must be inside the repository 
+* Path: githubrepo/.GitHub/workflows/demo.yaml 
+* Workflows 
+* workflows are defined in yaml file 
+* every workflows has a name  
+* workflow is triggered by one or more event 
+* workflow contains jobs
+    collections of task is jobs 
+* Jobs are running on runners : - self-hosted runners 
+
+* types of runners in GitHub:
+----------------------------- 
+1. github-hosted runners 
+   vm : ubuntu,windows,mac 
+   run-on: ubuntu-latest 
+   
+2. Self-hosted runners 
+   can run on our servers/vms/cloud instances  
+   
+3. Organization-level runners 
+    large-level 
+	large enterprises 
+	multiple-team using CI Infra 
+	
+4. repository level-runners 
+5. grouped runners: 
+     logical grouping of sel-hosted runners 
+6. ephemeral self-hosted runners 
+7. large/high -performance runner --paid
+
+
+flow: 
+====== 
+ .Github/workflows/demo.yam --jobs --step --github runners 
+ 
+--pending 
+
+
+
+31-12-2025: GitHubaction
+============================
+ what is githubaction
+ --------------------
+ is a workflow 
+ 
+ workflow structure 
+ ------------------ 
+  login asgithubuser --> select your repo --actions --> name.yaml 
+  
+#sampl yml
+--------------
+name: Sudharsan first workflow
+on: push
+jobs:
+  hello-job:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Print Hi Sudharsan
+       run: echo "first workflow success"
+
+checkoutrepo.yml 
+----------------- 
+ name: Chekout code
+ on: push 
+ jobs: 
+   checkout-job:
+      runs-on: ubuntu-latest 
+	  steps: 
+	    - name: checkout repo 
+		  uses: action/checkout@v4 
+		- name: print all files 
+		  runs: ls -la 
+
+ name: Run Linux Commands
+ on:Ipush
+ jobs:
+   shell-job:
+   runs-on:
+   steps:
+
+     - name: Run commands
+       run: ubuntu-latest
+
+
+02/01/2026: GitHub Action Project
+================================== 
+ Build github-actions -workflow -to deploye web application to tomcatserver:
+ ------------------------------------------------
+ 
+ Seen how to generate the package using Java+maven via githubactions 
+
+ step1: Create Ec2 Instance
+ step2: download and install tomcat server on ec2-server
+ step3: lets unzip/untar the tomcat directory
+ step4: try to configure the tomcat-user
+ step5: start the tomcat server
+ step6: access the tomcatsever-ui
+ step7: build the githubactions
+ step8: run the work-flow to deploy war to remote server-mumbai-
+ 
+ 
+
+ 
+5/01/2026: Github-action -Project 
+==================================
+GitHub : https://github.com/sresrinivas/Ebusiness.git
+
+build workflow for the following actions:
+-------------------------------------------
+ 1) raise the PR
+ 2) review the PR
+ 3) Perform Merging
+ 4) if any conflicts or not try to send notification to the user via slack
+ 
+ CI: 
+
+
+  ---practical session---
+
+
+06/01/2026: Build Automation:
+=============================
+What is build: 
+--------------
+ is a set of executable source code generated after compilation.
+  20 devlopers -- 20 pieces as files --- integration --one final piece 
+
+ build process: converting source code in to runnable , deployable as artifacts.
+
+
+
+build format:
+=============
+ language -- code -- java ---> jar/war/ear/image 
+             code -- .net ---> dll 
+
+
+without build what happens:
+---------------------------
+
+ 
+why do we need build: 
+---------------------
+ consistency 
+ repetability
+ traceability 
+ 
+ 
+Types of builds:
+----------------
+ nightly build 
+ ---------------
+  patch build: bug fix /security 
+  hotfix build 
+  release build 
+  Development build 
+
+
+How th builds are trigger: 
+---------------------------
+ Manual build 
+ automated build : --CI-SERVER-JENKINS 
+ Scheduled: -- pull 
+ Event-driven build: push,PR,merge 
+ 
+Based on architecture:
+----------------------
+ monolithic
+ microservice
+ serverless 
+ 
+ node.jjs: .tgz,buldle 
+ python: .whl, tar.gz
+ go:   binary 
+ docker: --image 
+ k8s: helm chart 
+ 
+ front end: --- static assets 
+
+Build Automation:
+-------------------
+ build tools: 
+ ------------- 
+  used to automate the build process 
+  
+  Java: --> maven, gradle 
+  node.js: --> npm,yarn,pnpm 
+  .Net : msbuild 
+  python: poetry 
+  go --go build 
+  
+
